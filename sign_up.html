@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mind Learning</title>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <div class="sign-up-form">
+      <img
+        src="https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/user-profile-icon.png"
+      />
+      <h1>Sign Up Now</h1>
+      <form id="signup-form">
+        <input type="email" name="username" class="input-box" placeholder="Your Email" required />
+        <input type="password" name="password" class="input-box" placeholder="Your Password" required />
+        <p>
+          <span><input type="checkbox" required /></span>I agree to the terms and conditions
+        </p>
+        <button type="button" class="signup-button" onclick="signup()">Sign up</button>
+        <hr />
+        <p class="or">OR</p>
+        <button type="button" class="google-button">Login with Google</button>
+        <p>Do you have an account?<a href="index.html">Login</a></p>
+      </form>
+    </div>
+    <script>
+      function signup() {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let username = document.querySelector("#signup-form input[name='username']").value;
+        let password = document.querySelector("#signup-form input[name='password']").value;
+        var raw = JSON.stringify({
+          username: username,
+          password: password
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+
+        fetch("http://localhost:3000/signup", requestOptions)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.message);
+            alert(data.message);
+            // Redirect to monuments.html after successful signup
+            if (data.message === "User created successfully") {
+              window.location.href = "home.html";
+            }
+          })
+          .catch((error) => console.log("error", error));
+      }
+    </script>
+  </body>
+</html>
